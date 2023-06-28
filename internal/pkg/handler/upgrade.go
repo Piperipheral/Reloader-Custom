@@ -1,9 +1,12 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"os"
 	"regexp"
 	"strconv"
@@ -211,9 +214,20 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 					alert.SendWebhookAlert(msg)
 				}
 			}
+			//custom code starts here
+			time.Sleep(5 * time.Second)
+			println("Sleeping for 5 seconds")
+			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
+			listOptions := metav1.ListOptions{
+				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
+			}
+			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
+			for _, p := range pods.Items {
+				fmt.Println(p.GetName())
+			}
+
 		}
-		time.Sleep(5 * time.Second)
-		println("Sleeping for 5 seconds")
+		//pods, err := v1().Pods("kube-system").List(context.Background(), v1.ListOptions{})
 	}
 	return nil
 }
