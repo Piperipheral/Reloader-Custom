@@ -5,14 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/labels"
-	"os"
-	"regexp"
-	"strconv"
-	"strings"
-	"time"
-
 	alert "github.com/piperipheral/Reloader-Custom/internal/pkg/alerts"
 	"github.com/piperipheral/Reloader-Custom/internal/pkg/callbacks"
 	"github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
@@ -24,8 +16,14 @@ import (
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/record"
+	"os"
+	"regexp"
+	"strconv"
+	"strings"
 )
 
 // GetDeploymentRollingUpgradeFuncs returns all callback funcs for a deployment
@@ -215,15 +213,15 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			time.Sleep(2 * time.Minute)
-			println("Sleeping for 5 seconds")
+			//time.Sleep(2 * time.Minute)
+			//println("Sleeping for 5 seconds")
 			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
 			listOptions := metav1.ListOptions{
 				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
 			}
 			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
 			for _, p := range pods.Items {
-				fmt.Println(p.GetName())
+				fmt.Println(p.Name, p.Status)
 			}
 
 		}
