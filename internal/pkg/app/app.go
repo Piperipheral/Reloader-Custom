@@ -1,9 +1,9 @@
 package app
 
+import "github.com/piperipheral/Reloader-Custom/internal/pkg/cmd"
+
 // Run runs the command
 func Run() error {
-	print("test")
-	//cmda := cmd.NewReloaderCommand()
-	//return cmda.Execute()
-	return *new(error)
+	cmda := cmd.NewReloaderCommand()
+	return cmda.Execute()
 }
