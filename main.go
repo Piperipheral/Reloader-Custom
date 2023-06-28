@@ -1,9 +1,8 @@
 package main
 
 import (
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/app"
 	"os"
-
-	"github.com/stakater/Reloader/internal/pkg/app"
 )
 
 func main() {
