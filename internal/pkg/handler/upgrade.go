@@ -143,6 +143,9 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 	for _, i := range items {
 		// find correct annotation and update the resource
 		annotations := upgradeFuncs.AnnotationsFunc(i)
+		println("this is custom")
+		println(i)
+		println("end of custom")
 		annotationValue, found := annotations[config.Annotation]
 		searchAnnotationValue, foundSearchAnn := annotations[options.AutoSearchAnnotation]
 		reloaderEnabledValue, foundAuto := annotations[options.ReloaderAutoAnnotation]
