@@ -215,7 +215,7 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			time.Sleep(5 * time.Second)
+			time.Sleep(2 * time.Minute)
 			println("Sleeping for 5 seconds")
 			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
 			listOptions := metav1.ListOptions{
