@@ -1,9 +1,13 @@
 package app
 
-import "github.com/piperipheral/Reloader-Custom/internal/pkg/cmd"
+import (
+	"fmt"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/cmd"
+)
 
 // Run runs the command
 func Run() error {
-	cmd := cmd.NewReloaderCommand()
-	return cmd.Execute()
+	fmt.Print("hello")
+	cmda := cmd.NewReloaderCommand()
+	return cmda.Execute()
 }
