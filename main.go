@@ -6,6 +6,7 @@ import (
 )
 
 func main() {
+	print("asdasasfasfasdasd")
 	if err := app.Run(); err != nil {
 		os.Exit(1)
 	}

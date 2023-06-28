@@ -6,7 +6,6 @@ import (
 
 // Run runs the command
 func Run() error {
-	print("hello")
 	cmda := cmd.NewReloaderCommand()
 	return cmda.Execute()
 }
