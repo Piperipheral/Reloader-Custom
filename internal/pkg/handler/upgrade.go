@@ -219,7 +219,8 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 			listOptions := metav1.ListOptions{
 				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
 			}
-			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
+			//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
+			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), listOptions)
 			for _, p := range pods.Items {
 				fmt.Println(p.Name, p.Status)
 			}
