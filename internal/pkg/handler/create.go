@@ -1,9 +1,9 @@
 package handler
 
 import (
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/metrics"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/util"
 	"github.com/sirupsen/logrus"
-	"github.com/stakater/Reloader/internal/pkg/metrics"
-	"github.com/stakater/Reloader/internal/pkg/util"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/tools/record"
 )

@@ -8,16 +8,16 @@ import (
 	"os"
 	"strings"
 
-	"github.com/stakater/Reloader/internal/pkg/constants"
-	"github.com/stakater/Reloader/internal/pkg/leadership"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/leadership"
 
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/controller"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/metrics"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/options"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/util"
+	"github.com/piperipheral/Reloader-Custom/pkg/kube"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
-	"github.com/stakater/Reloader/internal/pkg/controller"
-	"github.com/stakater/Reloader/internal/pkg/metrics"
-	"github.com/stakater/Reloader/internal/pkg/options"
-	"github.com/stakater/Reloader/internal/pkg/util"
-	"github.com/stakater/Reloader/pkg/kube"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 )

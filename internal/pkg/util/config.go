@@ -1,12 +1,12 @@
 package util
 
 import (
-	"github.com/stakater/Reloader/internal/pkg/constants"
-	"github.com/stakater/Reloader/internal/pkg/options"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/options"
 	v1 "k8s.io/api/core/v1"
 )
 
-//Config contains rolling upgrade configuration parameters
+// Config contains rolling upgrade configuration parameters
 type Config struct {
 	Namespace           string
 	ResourceName        string

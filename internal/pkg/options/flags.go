@@ -1,6 +1,6 @@
 package options
 
-import "github.com/stakater/Reloader/internal/pkg/constants"
+import "github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
 
 var (
 	// ConfigmapUpdateOnChangeAnnotation is an annotation to detect changes in

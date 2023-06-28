@@ -3,8 +3,8 @@ package callbacks
 import (
 	"context"
 
+	"github.com/piperipheral/Reloader-Custom/pkg/kube"
 	"github.com/sirupsen/logrus"
-	"github.com/stakater/Reloader/pkg/kube"
 	appsv1 "k8s.io/api/apps/v1"
 	v1 "k8s.io/api/core/v1"
 	meta_v1 "k8s.io/apimachinery/pkg/apis/meta/v1"

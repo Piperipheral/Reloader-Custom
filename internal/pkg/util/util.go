@@ -6,7 +6,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/stakater/Reloader/internal/pkg/crypto"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/crypto"
 	v1 "k8s.io/api/core/v1"
 )
 

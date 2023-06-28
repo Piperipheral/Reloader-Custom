@@ -6,16 +6,16 @@ import (
 	"testing"
 	"time"
 
-	"github.com/stakater/Reloader/internal/pkg/constants"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
 
-	"github.com/stakater/Reloader/internal/pkg/metrics"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/metrics"
 
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/handler"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/options"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/testutil"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/util"
+	"github.com/piperipheral/Reloader-Custom/pkg/kube"
 	"github.com/sirupsen/logrus"
-	"github.com/stakater/Reloader/internal/pkg/handler"
-	"github.com/stakater/Reloader/internal/pkg/options"
-	"github.com/stakater/Reloader/internal/pkg/testutil"
-	"github.com/stakater/Reloader/internal/pkg/util"
-	"github.com/stakater/Reloader/pkg/kube"
 	v1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"

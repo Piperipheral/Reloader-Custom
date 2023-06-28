@@ -9,15 +9,15 @@ import (
 	"testing"
 	"time"
 
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/constants"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/controller"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/handler"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/metrics"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/options"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/testutil"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/util"
+	"github.com/piperipheral/Reloader-Custom/pkg/kube"
 	"github.com/sirupsen/logrus"
-	"github.com/stakater/Reloader/internal/pkg/constants"
-	"github.com/stakater/Reloader/internal/pkg/controller"
-	"github.com/stakater/Reloader/internal/pkg/handler"
-	"github.com/stakater/Reloader/internal/pkg/metrics"
-	"github.com/stakater/Reloader/internal/pkg/options"
-	"github.com/stakater/Reloader/internal/pkg/testutil"
-	"github.com/stakater/Reloader/internal/pkg/util"
-	"github.com/stakater/Reloader/pkg/kube"
 )
 
 func TestMain(m *testing.M) {

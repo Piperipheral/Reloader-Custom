@@ -6,8 +6,8 @@ import (
 	"sync"
 	"time"
 
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/controller"
 	"github.com/sirupsen/logrus"
-	"github.com/stakater/Reloader/internal/pkg/controller"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/tools/leaderelection"
 	"k8s.io/client-go/tools/leaderelection/resourcelock"

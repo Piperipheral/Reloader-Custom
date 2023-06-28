@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/stakater/Reloader/internal/pkg/util"
+	"github.com/piperipheral/Reloader-Custom/internal/pkg/util"
 )
 
 // ResourceHandler handles the creation and update of resources
