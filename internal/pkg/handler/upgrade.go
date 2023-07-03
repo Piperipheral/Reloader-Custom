@@ -217,15 +217,16 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 			logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
 			time.Sleep(15 * time.Second)
 
-			fmt.Print("trying to find pod")
+			message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
 			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": resourceName}}
 			listOptions := metav1.ListOptions{
 				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
 			}
+			logrus.Infof(message)
 			//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
 			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), listOptions)
 			for _, p := range pods.Items {
-				fmt.Println("pod: ", p.Name, p.Status)
+				logrus.Infof(fmt.Sprintf("pod: *%s*, pod status: *%s*", p.Name, p.Status.String()))
 			}
 
 		}
