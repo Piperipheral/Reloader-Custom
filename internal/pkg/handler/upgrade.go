@@ -130,7 +130,7 @@ func doRollingUpgrade(config util.Config, collectors metrics.Collectors, recorde
 }
 
 func rollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callbacks.RollingUpgradeFuncs, collectors metrics.Collectors, recorder record.EventRecorder) error {
-
+	logrus.Infof("VERSION: HELLO")
 	err := PerformRollingUpgrade(clients, config, upgradeFuncs, collectors, recorder)
 	if err != nil {
 		logrus.Errorf("Rolling upgrade for '%s' failed with error = %v", config.ResourceName, err)
@@ -140,6 +140,7 @@ func rollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callb
 
 // PerformRollingUpgrade upgrades the deployment if there is any change in configmap or secret data
 func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callbacks.RollingUpgradeFuncs, collectors metrics.Collectors, recorder record.EventRecorder) error {
+
 	items := upgradeFuncs.ItemsFunc(clients, config.Namespace)
 
 	for _, i := range items {
