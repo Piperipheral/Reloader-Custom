@@ -217,7 +217,8 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 			logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
 			time.Sleep(1 * time.Minute)
 
-			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
+			fmt.Print("trying to find pod")
+			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": resourceName}}
 			listOptions := metav1.ListOptions{
 				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
 			}
