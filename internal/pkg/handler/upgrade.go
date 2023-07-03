@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -15,6 +16,8 @@ import (
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
+	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/record"
 	"os"
@@ -211,19 +214,18 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			time.Sleep(2 * time.Minute)
-			//println("Sleeping for 5 seconds")
-			/*
-				labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
-				listOptions := metav1.ListOptions{
-					LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
-				}
-				//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
-				pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.Background(), listOptions)
-				for _, p := range pods.Items {
-					fmt.Println("pod: ", p.Name, p.Status)
-				}
-			*/
+			logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
+			time.Sleep(1 * time.Minute)
+
+			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": "test-deployment"}}
+			listOptions := metav1.ListOptions{
+				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
+			}
+			//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
+			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), listOptions)
+			for _, p := range pods.Items {
+				fmt.Println("pod: ", p.Name, p.Status)
+			}
 
 		}
 		//pods, err := v1().Pods("kube-system").List(context.Background(), v1.ListOptions{})
