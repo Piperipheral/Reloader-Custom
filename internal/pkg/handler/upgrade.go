@@ -17,7 +17,6 @@ import (
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/record"
 	"os"
@@ -218,13 +217,9 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 			time.Sleep(15 * time.Second)
 
 			message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
-			labelSelector := metav1.LabelSelector{MatchLabels: map[string]string{"app": resourceName}}
-			listOptions := metav1.ListOptions{
-				LabelSelector: labels.Set(labelSelector.MatchLabels).String(),
-			}
 			logrus.Infof(message)
 			//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
-			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), listOptions)
+			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=label_name"})
 			for _, p := range pods.Items {
 				logrus.Infof(fmt.Sprintf("pod: *%s*, pod status: *%s*", p.Name, p.Status.String()))
 			}
