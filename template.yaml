@@ -1,0 +1,219 @@
+apiVersion: v1
+items:
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "27"
+        reloader.stakater.com/auto: "true"
+      creationTimestamp: "2023-06-28T15:49:36Z"
+      generation: 29
+      labels:
+        app: test-deployment-7
+      name: test-deployment-7
+      namespace: test
+      resourceVersion: "109743"
+      uid: 3cb7ff1b-9edd-49f8-86ab-860b6840fc20
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 5
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: test-deployment-7
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: test-deployment-7
+        spec:
+          containers:
+            - env:
+                - name: DEMO_GREETING
+                  value: Hello from the environment
+                - name: DEMO_GREETING2
+                  value: Hello from the environment
+                - name: UI_PROPERTIES_FILE_NAME
+                  valueFrom:
+                    configMapKeyRef:
+                      key: ui_properties_file_name
+                      name: test-configmap
+                - name: STAKATER_TEST_CONFIGMAP_CONFIGMAP
+                  value: db8bdd93c691536e57adc19a70ab18927ec6536a
+              image: piperipheral/stubby:v1.6
+              imagePullPolicy: IfNotPresent
+              name: alpine
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      availableReplicas: 5
+      conditions:
+        - lastTransitionTime: "2023-07-06T07:48:30Z"
+          lastUpdateTime: "2023-07-06T07:48:30Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+        - lastTransitionTime: "2023-06-28T15:49:36Z"
+          lastUpdateTime: "2023-07-06T07:59:04Z"
+          message: ReplicaSet "test-deployment-7-548674bfb4" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+      observedGeneration: 29
+      readyReplicas: 5
+      replicas: 5
+      updatedReplicas: 5
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "21"
+        reloader.stakater.com/auto: "true"
+      creationTimestamp: "2023-06-28T16:25:47Z"
+      generation: 23
+      labels:
+        app: test-deployment-7-2
+      name: test-deployment-7-2
+      namespace: test
+      resourceVersion: "109806"
+      uid: d11cdb16-e3b0-4c8c-ac4a-3dcd0226fc9e
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 5
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: test-deployment-7-2
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: test-deployment-7-2
+        spec:
+          containers:
+            - env:
+                - name: GREETING
+                  value: Warm greetings to
+                - name: HONORIFIC
+                  value: The Most Honorable
+                - name: NAME
+                  value: Kubernetes
+                - name: UI_PROPERTIES_FILE_NAME
+                  valueFrom:
+                    configMapKeyRef:
+                      key: ui_properties_file_name
+                      name: test-configmap
+                - name: STAKATER_TEST_CONFIGMAP_CONFIGMAP
+                  value: db8bdd93c691536e57adc19a70ab18927ec6536a
+              image: piperipheral/stubby:v1.6
+              imagePullPolicy: IfNotPresent
+              name: stubby
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      availableReplicas: 5
+      conditions:
+        - lastTransitionTime: "2023-07-06T07:48:29Z"
+          lastUpdateTime: "2023-07-06T07:48:29Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+        - lastTransitionTime: "2023-06-28T16:25:47Z"
+          lastUpdateTime: "2023-07-06T07:59:08Z"
+          message: ReplicaSet "test-deployment-7-2-f45c4868f" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+      observedGeneration: 23
+      readyReplicas: 5
+      replicas: 5
+      updatedReplicas: 5
+  - apiVersion: apps/v1
+    kind: Deployment
+    metadata:
+      annotations:
+        deployment.kubernetes.io/revision: "1"
+      creationTimestamp: "2023-06-30T16:27:04Z"
+      generation: 1
+      labels:
+        app: test-non
+      name: test-non
+      namespace: test
+      resourceVersion: "108933"
+      uid: 55fe1e9e-f6fb-4f08-999c-d1f1648e240e
+    spec:
+      progressDeadlineSeconds: 600
+      replicas: 1
+      revisionHistoryLimit: 10
+      selector:
+        matchLabels:
+          app: test-non
+      strategy:
+        rollingUpdate:
+          maxSurge: 25%
+          maxUnavailable: 25%
+        type: RollingUpdate
+      template:
+        metadata:
+          creationTimestamp: null
+          labels:
+            app: test-non
+        spec:
+          containers:
+            - image: piperipheral/stubby:v1.4
+              imagePullPolicy: IfNotPresent
+              name: stubby
+              resources: {}
+              terminationMessagePath: /dev/termination-log
+              terminationMessagePolicy: File
+          dnsPolicy: ClusterFirst
+          restartPolicy: Always
+          schedulerName: default-scheduler
+          securityContext: {}
+          terminationGracePeriodSeconds: 30
+    status:
+      availableReplicas: 1
+      conditions:
+        - lastTransitionTime: "2023-06-30T16:27:04Z"
+          lastUpdateTime: "2023-06-30T16:27:33Z"
+          message: ReplicaSet "test-non-c9dc646b8" has successfully progressed.
+          reason: NewReplicaSetAvailable
+          status: "True"
+          type: Progressing
+        - lastTransitionTime: "2023-07-06T07:48:27Z"
+          lastUpdateTime: "2023-07-06T07:48:27Z"
+          message: Deployment has minimum availability.
+          reason: MinimumReplicasAvailable
+          status: "True"
+          type: Available
+      observedGeneration: 1
+      readyReplicas: 1
+      replicas: 1
+      updatedReplicas: 1
+kind: List
+metadata:
+  resourceVersion: ""

@@ -139,8 +139,32 @@ func rollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callb
 // PerformRollingUpgrade upgrades the deployment if there is any change in configmap or secret data
 func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callbacks.RollingUpgradeFuncs, collectors metrics.Collectors, recorder record.EventRecorder) error {
 
+	//reset current service processed counter
 	currentServiceProcessed := 0
+
 	servicesPerBatch := 5
+	servicesPerBatchEnv, found := os.LookupEnv("SERVICES_PER_BATCH")
+	if found {
+		servicesPerBatch, _ = strconv.Atoi(servicesPerBatchEnv)
+	} else {
+		logrus.Infof(fmt.Sprintf("SERVICES_PER_BATCH envvar not set, using default value of %d", servicesPerBatch))
+	}
+
+	waitTimeService := 1 //default value
+	waitTimeServiceEnv, found := os.LookupEnv("WAIT_TIME_IN_SECONDS_SVC")
+	if found {
+		waitTimeService, _ = strconv.Atoi(waitTimeServiceEnv)
+	} else {
+		logrus.Infof(fmt.Sprintf("WAIT_TIME_IN_SECONDS_SVC envvar not set, using default value of %d", waitTimeService))
+	}
+
+	waitTimeBatch := 5 //default value
+	waitTimeBatchEnv, found := os.LookupEnv("WAIT_TIME_IN_SECONDS_BATCH")
+	if found {
+		waitTimeBatch, _ = strconv.Atoi(waitTimeBatchEnv)
+	} else {
+		logrus.Infof(fmt.Sprintf("WAIT_TIME_IN_SECONDS_BATCH envvar not set, using default value of %d", waitTimeBatch))
+	}
 
 	items := upgradeFuncs.ItemsFunc(clients, config.Namespace)
 
@@ -215,24 +239,13 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			logrus.Infof(fmt.Sprintf("waiting 2 seconds in between services, currently at service: '%s'", resourceName))
-			time.Sleep(2 * time.Second)
+			logrus.Infof(fmt.Sprintf("sleeping for %d seconds in between services after rolling out service: '%s'", waitTimeService, resourceName))
+			time.Sleep(time.Duration(waitTimeService) * time.Second)
+
 			currentServiceProcessed++
 			if currentServiceProcessed%servicesPerBatch == 0 {
-				logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
-				valueFromEnv, found := os.LookupEnv("WAIT_TIME_IN_SECONDS")
-				if found {
-					waitTime, err := strconv.Atoi(valueFromEnv)
-					if err != nil {
-						//handle error envvar not found
-					} else {
-						time.Sleep(time.Duration(waitTime) * time.Second)
-						logrus.Infof(fmt.Sprintf("Batch number: %i, sleeping for %i", (currentServiceProcessed / servicesPerBatch), waitTime))
-					}
-				} else {
-					logrus.Infof(fmt.Sprintf("Batch number: %i, sleeping for 15 seconds (envvar not found)", (currentServiceProcessed / servicesPerBatch)))
-					time.Sleep(15 * time.Second)
-				}
+				logrus.Infof(fmt.Sprintf("Batch number: %d, sleeping for %d seconds", currentServiceProcessed/servicesPerBatch, waitTimeBatch))
+				time.Sleep(time.Duration(waitTimeBatch) * time.Second)
 			}
 			/*
 				message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
