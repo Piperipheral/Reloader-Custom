@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"context"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -16,7 +15,6 @@ import (
 	"github.com/sirupsen/logrus"
 	v1 "k8s.io/api/core/v1"
 	"k8s.io/apimachinery/pkg/api/meta"
-	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/tools/record"
 	"os"
@@ -217,7 +215,9 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			currentServiceProcessed += 1
+			logrus.Infof(fmt.Sprintf("waiting 2 seconds in between services, currently at service: '%s'", resourceName))
+			time.Sleep(2 * time.Second)
+			currentServiceProcessed++
 			if currentServiceProcessed%servicesPerBatch == 0 {
 				logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
 				valueFromEnv, found := os.LookupEnv("WAIT_TIME_IN_SECONDS")
@@ -227,20 +227,22 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 						//handle error envvar not found
 					} else {
 						time.Sleep(time.Duration(waitTime) * time.Second)
+						logrus.Infof(fmt.Sprintf("Batch number: %i, sleeping for %i", (currentServiceProcessed / servicesPerBatch), waitTime))
 					}
 				} else {
+					logrus.Infof(fmt.Sprintf("Batch number: %i, sleeping for 15 seconds (envvar not found)", (currentServiceProcessed / servicesPerBatch)))
 					time.Sleep(15 * time.Second)
 				}
 			}
-
-			message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
-			logrus.Infof(message)
-			//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
-			pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=label_name"})
-			for _, p := range pods.Items {
-				logrus.Infof(fmt.Sprintf("pod: *%s*, pod status: *%s*", p.Name, p.Status.String()))
-			}
-
+			/*
+				message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
+				logrus.Infof(message)
+				//pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(*new(context.Context), listOptions)
+				pods, _ := clients.KubernetesClient.CoreV1().Pods(config.Namespace).List(context.TODO(), metav1.ListOptions{LabelSelector: "name=label_name"})
+				for _, p := range pods.Items {
+					logrus.Infof(fmt.Sprintf("pod: *%s*, pod status: *%s*", p.Name, p.Status.String()))
+				}
+			*/
 		}
 		//pods, err := v1().Pods("kube-system").List(context.Background(), v1.ListOptions{})
 	}
