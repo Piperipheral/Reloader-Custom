@@ -141,6 +141,9 @@ func rollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callb
 // PerformRollingUpgrade upgrades the deployment if there is any change in configmap or secret data
 func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFuncs callbacks.RollingUpgradeFuncs, collectors metrics.Collectors, recorder record.EventRecorder) error {
 
+	currentServiceProcessed := 0
+	servicesPerBatch := 5
+
 	items := upgradeFuncs.ItemsFunc(clients, config.Namespace)
 
 	for _, i := range items {
@@ -214,8 +217,21 @@ func PerformRollingUpgrade(clients kube.Clients, config util.Config, upgradeFunc
 				}
 			}
 			//custom code starts here
-			logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
-			time.Sleep(15 * time.Second)
+			currentServiceProcessed += 1
+			if currentServiceProcessed%servicesPerBatch == 0 {
+				logrus.Infof(fmt.Sprintf("updating '%s'", resourceName))
+				valueFromEnv, found := os.LookupEnv("WAIT_TIME_IN_SECONDS")
+				if found {
+					waitTime, err := strconv.Atoi(valueFromEnv)
+					if err != nil {
+						//handle error envvar not found
+					} else {
+						time.Sleep(time.Duration(waitTime) * time.Second)
+					}
+				} else {
+					time.Sleep(15 * time.Second)
+				}
+			}
 
 			message := fmt.Sprintf("trying to look for pods *%s* in namespace *%s*", resourceName, config.Namespace)
 			logrus.Infof(message)
